@@ -153,7 +153,6 @@ def ExecHedgeVarES(UserCurrency,TargetCurrency,period,forwardRate,hedgePercent,r
        st.session_state.dailyDataHedge=dailyDataHedge
        st.session_state.hedgePercent=hedgePercent
        st.session_state.period=period
-       st.session_state.FR=forwardRate
        riskrateHedge0 = dailyDataHedge['Pct_Change_hedge0'].quantile(risktolerance)
        riskrateHedge1 = dailyDataHedge['Pct_Change_hedge1'].quantile(risktolerance)
        riskrateHedge0_ = frequentDataHedge['Pct_Change_hedge0'].quantile(risktolerance)
@@ -246,7 +245,7 @@ if st.session_state.logged_in:
         if forwardRate:
             forwardRate=forwardRate.split(',')
             forwardRate = [float(num) for num in forwardRate]
-            print(forwardRate,'*****************')
+            st.session_state.FR=forwardRate
         else:
             st.warning("👆 Please enter the exchange rates for the forward contract(s). If you will use different forward contracts for each specific period, please enter the agreed exchange rates (forward rates) and separate them with a comma (,). If you plan to use one forward contract, enter the agreed forward rate.")
             st.stop()
