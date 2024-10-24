@@ -153,6 +153,7 @@ def ExecHedgeVarES(UserCurrency,TargetCurrency,period,forwardRate,hedgePercent,r
        st.session_state.dailyDataHedge=dailyDataHedge
        st.session_state.hedgePercent=hedgePercent
        st.session_state.period=period
+       st.session_state.FR=forwardRate
        riskrateHedge0 = dailyDataHedge['Pct_Change_hedge0'].quantile(risktolerance)
        riskrateHedge1 = dailyDataHedge['Pct_Change_hedge1'].quantile(risktolerance)
        riskrateHedge0_ = frequentDataHedge['Pct_Change_hedge0'].quantile(risktolerance)
@@ -223,7 +224,8 @@ if 'risk_assessment0' not in st.session_state:
     st.session_state.risk_assessment0=None
 if 'risk_assessment1' not in st.session_state:
     st.session_state.risk_assessment1=None
-
+if 'FR' not in st.session_state:
+    st.session_state.FR=None
 
 if st.session_state.logged_in:
   try:
@@ -237,7 +239,7 @@ if st.session_state.logged_in:
     target_currency = st.sidebar.selectbox("Select Target Currency", ["GBP", "USD", "EUR","JPY","CAD","CHF","AUD","NZD","MAD","RUB","PHP","INR","SGD","HKD","CNY","HUF","SEK","MYR","THB","ZAR"])
     Frequent = st.sidebar.selectbox("Select The period of your Exchange", ["week","month","quarter"])
     hedgePercent = st.sidebar.selectbox("Select The hedged percentage of your exposure",[0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1])
-    forwardRate= st.sidebar.text_input("Enter the forward rate(s) (e.g., 1.2548,1.2241,etc):", None)
+    forwardRate= st.sidebar.text_input("Enter the forward rate(s) (e.g., 1.2548,1.2241,etc):", st.session_state.FR)
     risk_tolerance = st.sidebar.slider("Select Risk Tolerance (%)", min_value=1, max_value=10, value=5) / 100
     # Assess Risk button
     if st.sidebar.button("Assess Risk"):
